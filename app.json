@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "slug": "fabrica",
+  "name": "Fabrica — cursuri și chestionare",
+  "version": "1.1.0",
+  "updated": "2026-10-19",
+  "description": "Fabrica: fabrica de cursuri și chestionare. Scrii lecții, întrebări, dovezi și un test final și exporți un fișier HTML autonom, offline, cu CSP strict. Fără cont, fără telemetrie.",
+  "egress": [
+    {
+      "host": "about",
+      "via": [
+        "csp:frame-src"
+      ]
+    }
+  ],
+  "permissions": [
+    "serviceWorker",
+    "localStorage",
+    "Web Crypto"
+  ],
+  "storageKeys": [],
+  "sizeBytes": 474909,
+  "sha256": "02bedc114b745bd6e31d121161a628bf81997bf790cb0bd85c0d66ad6471eb49",
+  "csp": {
+    "present": true,
+    "directives": {
+      "default-src": "'none'",
+      "script-src": "sha256×4",
+      "style-src": "'unsafe-inline'",
+      "img-src": "'self' data: blob:",
+      "media-src": "data: blob:",
+      "font-src": "data:",
+      "connect-src": "'none'",
+      "base-uri": "'none'",
+      "form-action": "'none'",
+      "frame-src": "about:",
+      "object-src": "'none'",
+      "worker-src": "'self' blob:",
+      "manifest-src": "'self'"
+    },
+    "scriptInline": "hash",
+    "connect": "'none'"
+  },
+  "features": {
+    "export": true,
+    "import": true,
+    "i18n": [
+      "ro",
+      "en",
+      "fr",
+      "it",
+      "es",
+      "pt",
+      "hu",
+      "de"
+    ],
+    "pwa": {
+      "manifest": true,
+      "serviceWorker": true
+    },
+    "modules": [
+      "core",
+      "label",
+      "bundle"
+    ]
+  },
+  "kit": {
+    "version": "1.1.1",
+    "modules": [
+      "core",
+      "label",
+      "bundle"
+    ]
+  },
+  "selfSerializing": false
+}
