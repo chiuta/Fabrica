@@ -1,18 +1,25 @@
 // Teste Fabrica — Playwright, rețea blocată. Rulare: node tests/test.mjs
+// [fff-portable] axe-core: FFF_AXE / AXE_PATH, apoi pachetul `axe-core` (npm i -D axe-core). Dacă lipsește: undefined (testele cu axe pică cu mesaj clar).
+import {createRequire as __fffCR} from 'node:module';
+const __fffAxe = () => process.env.FFF_AXE || process.env.AXE_PATH || (() => { try { return __fffCR(import.meta.url).resolve('axe-core/axe.min.js'); } catch { return undefined; } })();
+// [fff-portable] versiunea/data/kitul aplicației se citesc din app.json (nu mai sunt hard-codate în teste)
+import {readFileSync as __fffRF} from 'node:fs';
+const __FFF_APP = JSON.parse(__fffRF(new URL('../app.json', import.meta.url), 'utf8'));
+const __fffRe = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 import {createRequire} from "module";
 import path from "path"; import {fileURLToPath} from "url"; import fs from "fs"; import os from "os"; import crypto from "crypto"; import {execFileSync} from "child_process";
-const require=createRequire("/opt/node-tools/package.json");
+const require=createRequire(process.env.PW_ROOT || import.meta.url);
 const {chromium}=require("playwright");
 const __dir=path.dirname(fileURLToPath(import.meta.url));
 const APP='file://'+path.resolve(__dir,'..','index.html');
-const AXE='/tmp/claude-0/-home-claude/78529928-3825-51c3-b9bd-0e81655ab6bc/scratchpad/sweep/node_modules/axe-core/axe.min.js';
+const AXE=__fffAxe();
 const AXE_SRC=fs.readFileSync(AXE,'utf8');
 let pass=0, fail=0; const failures=[];
 const ok=(c,m)=>{ if(c)pass++; else {fail++; failures.push(m); console.log('  FAIL:',m);} };
 const eq=(a,b,m)=>{ const A=JSON.stringify(a),B=JSON.stringify(b); ok(A===B,m+' (obtained '+A+', expected '+B+')'); };
 const sect=s=>console.log('\n## '+s);
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'fabrica-'));
-const browser=await chromium.launch({executablePath:"/opt/pw-browsers/chromium"});
+const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH || undefined});
 async function mk(url,opts){
   const ctx=await browser.newContext(Object.assign({viewport:{width:1280,height:800},acceptDownloads:true},opts||{}));
   const reqs=[]; await ctx.route(/^https?:/,r=>{reqs.push(r.request().url()); r.abort();});
@@ -42,8 +49,8 @@ let ed=await mk(APP); await ed.waitForFunction(()=>window.__fabrica);
 const edHtml=fs.readFileSync(path.resolve(__dir,'..','index.html'),'utf8');
 ok(cspHashOK(edHtml),'hash-urile CSP ale editorului corespund scripturilor inline');
 ok(!/ on\w+=/.test(edHtml.replace(/<script[\s\S]*?<\/script>/g,'')),'fără handlere inline în editor');
-ok(/<meta name="application-version" content="1.1.0">/.test(edHtml)&&/<meta name="last-updated" content="2026-10-19">/.test(edHtml),'meta versiune');
-eq(await ed.textContent('#app-version'),'v1.1.0 · 2026-10-19','#app-version');
+ok(new RegExp(String.raw`<meta name="application-version" content="${__fffRe(__FFF_APP.version)}">`).test(edHtml)&&new RegExp(String.raw`<meta name="last-updated" content="${__fffRe(__FFF_APP.updated)}">`).test(edHtml),'meta versiune');
+eq(await ed.textContent('#app-version'),`v${__FFF_APP.version} · ${__FFF_APP.updated}`,'#app-version');
 eq(ed.__errs,[],'0 pageerror/CSP la pornire'); eq(ed.__reqs,[],'0 cereri de rețea');
 eq(await ed.evaluate(()=>document.documentElement.lang),'ro','html[lang]=ro implicit');
 await axe(ed,'editor, panou Curs');
@@ -196,7 +203,7 @@ await ed.evaluate(()=>window.__fabrica.setCourse({title:'altceva',levels:[]})); 
 eq(await ed.evaluate(()=>window.__fabrica.course.levels.length),2,'import din HTML exportat');
 // .fff.json
 const fBundle=await dl('[data-act="exp-bundle"]'); const bj=JSON.parse(fs.readFileSync(fBundle,'utf8'));
-eq([bj.format,bj.schema,bj.app,bj.version,bj.updated],['fff-bundle',1,'fabrica','1.1.0','2026-10-19'],'bundle .fff.json');
+eq([bj.format,bj.schema,bj.app,bj.version,bj.updated],['fff-bundle',1,'fabrica',__FFF_APP.version,__FFF_APP.updated],'bundle .fff.json');
 await ed.evaluate(()=>window.__fabrica.setCourse({title:'altceva',levels:[]})); await ed.setInputFiles('#filef',fBundle); await ed.waitForTimeout(200);
 eq(await ed.evaluate(()=>window.__fabrica.course.title),'Cum citești o etichetă nutrițională','import bundle .fff.json');
 // fișier invalid
@@ -227,7 +234,7 @@ eq(det,[true,true,true,8],'ordine determinată de seed + extragere 8 din bancă'
 await ed.click('#tab-content'); await ed.click('#tree .tn >> nth=1');
 const png=path.join(tmp,'i.png'); fs.writeFileSync(png,Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==','base64'));
 const nAssets=await ed.evaluate(()=>Object.keys(window.__fabrica.course.assets).length);
-const [fc2]=await Promise.all([ed.waitForEvent('filechooser'),ed.click('[data-act="md"][data-md="img"]')]); await fc2.setFiles(png); await ed.waitForTimeout(600);
+const [fc2]=await Promise.all([ed.waitForEvent('filechooser'),ed.click('[data-act="md"][data-md="img"]')]); await fc2.setFiles(png); await ed.waitForSelector('dialog .ask-in'); await ed.fill('dialog .ask-in','Text alternativ de test'); await ed.click('dialog[open] .ask-row .pri'); await ed.waitForTimeout(600);
 ok((await ed.evaluate(()=>Object.keys(window.__fabrica.course.assets).length))===nAssets+1,'imagine adăugată în resurse');
 ok((await ed.inputValue('#f-levels-0-lessons-0-body')).includes('![Text alternativ de test](img:'),'referință imagine inserată cu alt');
 // previzualizare
@@ -369,7 +376,7 @@ await axe(g,'generat, certificat');
 await g.evaluate(()=>location.hash='#/settings'); await g.waitForTimeout(80);
 const [pd]=await Promise.all([g.waitForEvent('download'),g.click('[data-act="exp-progress"]')]); const pf=path.join(tmp,'progres.fff.json'); await pd.saveAs(pf); const pj=JSON.parse(fs.readFileSync(pf,'utf8')); eq([pj.format,pj.schema,pj.app],['fff-bundle',1,'course:eticheta-nutritionala'],'export progres (.fff.json)');
 g.removeAllListeners('dialog'); g.on('dialog',d=>d.accept());
-await g.click('[data-act="reset"]'); await g.waitForTimeout(100); ok(await g.evaluate(()=>JSON.parse(localStorage.getItem('fff.course.eticheta-nutritionala.progress')).done&&Object.keys(JSON.parse(localStorage.getItem('fff.course.eticheta-nutritionala.progress')).done).length===0),'resetare progres');
+await g.click('[data-act="reset"]'); await g.click('dialog.fb-ask .pri'); await g.waitForTimeout(100); ok(await g.evaluate(()=>JSON.parse(localStorage.getItem('fff.course.eticheta-nutritionala.progress')).done&&Object.keys(JSON.parse(localStorage.getItem('fff.course.eticheta-nutritionala.progress')).done).length===0),'resetare progres');
 await g.setInputFiles('#impf',pf); await g.waitForTimeout(150); ok(await g.evaluate(()=>Object.keys(JSON.parse(localStorage.getItem('fff.course.eticheta-nutritionala.progress')).done).length===5),'import progres');
 fs.writeFileSync(path.join(tmp,'rau.json'),'{"format":"fff-bundle","app":"altul","data":{}}'); await g.setInputFiles('#impf',path.join(tmp,'rau.json')); await g.waitForTimeout(100); ok((await g.textContent('#setmsg')).includes('invalid'),'import progres de la alt curs respins');
 await axe(g,'generat, setări');
