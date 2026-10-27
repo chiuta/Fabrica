@@ -2,7 +2,9 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 2.0.0 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 2.0.1 · **Ultima actualizare:** 2026-10-27
+
+**Stare:** stabil · **Offline:** complet
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -25,6 +27,12 @@ Fabrica este o fabrică de cursuri și chestionare: scrii un curs (date, avertis
 9. **Export**: HTML, ZIP (index.html + README.md + sursa `.course.json`), sursa `.course.json`, copie de siguranță `.fff.json`. **Import**: `.course.json`, HTML-ul sau ZIP-ul exportat (cursul se recuperează din ele), `.fff.json`; întrebări din **CSV** (coloane: `tip;întrebare;corect;greșit1;greșit2;greșit3;explicație`; tipuri `unic, multi, adevarat-fals, completare, scurt, ordonare, potrivire`; variantele multiple se separă cu `|`, perechile cu `stânga=dreapta`; delimitator `,` `;` sau tab, ghilimele RFC 4180).
 
 Anulare/refacere: butoanele din antet, `Ctrl+Z` / `Ctrl+Y` (în afara câmpurilor de text) și butonul „Anulează” din notificarea de după ștergere.
+
+## Formate de export, tipuri de întrebări și șabloane: ce există (2.0.1)
+
+- **Tipuri de întrebări existente (7):** alegere unică, alegere multiplă, adevărat/fals, completare, ordonare, potrivire de perechi, răspuns scurt. În această versiune nu s-a adăugat niciun tip nou.
+- **Șabloane existente:** „Curs scurt cu test”, „Ghid cu tabel de dovezi”, „Chestionar simplu” și exemplul complet. În această versiune nu s-au adăugat șabloane noi.
+- **Export:** HTML unic, ZIP, `.course.json`, `.fff.json` și quiz pentru Undava (.json). **Nu există export SCORM** (planificat, neimplementat): ar cere un manifest și un adaptor către API-ul LMS în player și ar putea fi numit „suportat” doar după testare pe un LMS real (Moodle sau similar), lucru care nu s-a făcut.
 
 ## Ce NU face și limitele
 

@@ -2,7 +2,9 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 2.0.0 · **Last updated:** 2026-10-26
+**Version:** 2.0.1 · **Last updated:** 2026-10-27
+
+**Status:** stable · **Offline:** complete
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -25,6 +27,12 @@ Fabrica is a factory for courses and quizzes: you write a course (data, warnings
 9. **Export**: HTML, ZIP (index.html + README.md + `.course.json` source), the `.course.json` source, `.fff.json` backup. **Import**: `.course.json`, the exported HTML or ZIP (the course is recovered from them), `.fff.json`; questions from **CSV** (columns: `tip;întrebare;corect;greșit1;greșit2;greșit3;explicație`; types `unic, multi, adevarat-fals, completare, scurt, ordonare, potrivire`; multiple variants are separated by `|`, pairs by `left=right`; delimiter `,` `;` or tab, RFC 4180 quoting).
 
 Undo/redo: the header buttons, `Ctrl+Z` / `Ctrl+Y` (outside text fields) and the "Undo" button in the notification after a deletion.
+
+## Export formats, question types and templates: what exists (2.0.1)
+
+- **Question types already available (7):** single choice, multiple choice, true/false, fill-in, ordering, pair matching, short answer. No new type was added in this release.
+- **Starter templates already available:** "Short course with test", "Guide with evidence table", "Simple quiz" and the complete example. No new templates were added in this release.
+- **Export:** single HTML, ZIP, `.course.json`, `.fff.json`, and quiz for Undava (.json). **There is no SCORM export** (planned, not implemented): it would need a manifest plus an LMS API adapter in the player, and it could only be called "supported" after testing on a real LMS (Moodle or similar), which has not been done.
 
 ## What it does NOT do, and its limits
 
