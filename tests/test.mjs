@@ -68,7 +68,7 @@ await ed.setViewportSize({width:1280,height:800});
 sect('2. Editor — șabloane, adăugare/mutare/ștergere cu anulare');
 await ed.click('#tab-meta'); await ed.click('#btn-tpl'); await ed.waitForSelector('#dlg-tpl[open]');
 await axe(ed,'dialog șabloane');
-eq(await ed.locator('#tpl-list li').count(),4,'4 șabloane');
+eq(await ed.locator('#tpl-list li').count(),6,'6 șabloane (4 inițiale + 2 în română, 2.1.0)');
 await ed.click('#tpl-list li:nth-child(1) button'); await ed.waitForTimeout(100);
 let c=await ed.evaluate(()=>window.__fabrica.course);
 eq([c.levels.length,c.levels[0].lessons.length,c.finalTest.enabled],[1,2,true],'șablon „curs scurt”');

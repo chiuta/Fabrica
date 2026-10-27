@@ -2,13 +2,13 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 2.0.1 · **Last updated:** 2026-10-27
+**Version:** 2.1.0 · **Last updated:** 2026-10-27
 
 **Status:** stable · **Offline:** complete
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
-Fabrica is a factory for courses and quizzes: you write a course (data, warnings, levels and lessons in simple Markdown, questions of seven types, glossary, evidence table, final test with a question bank and seed-determined draw), validate it and export it as **a single self-contained HTML file** (optionally a ZIP with a README). The generated file runs offline and has navigation, locally saved progress, spaced repetition for wrong answers, a final test, a printable completion certificate (with no accreditation value), light/dark mode and an interface in 8 languages. It includes a complete example ("How to read a nutrition label") and three starter templates.
+Fabrica is a factory for courses and quizzes: you write a course (data, warnings, levels and lessons in simple Markdown, questions of eight types, glossary, evidence table, final test with a question bank and seed-determined draw), validate it and export it as **a single self-contained HTML file** (optionally a ZIP with a README). The generated file runs offline and has navigation, locally saved progress, spaced repetition for wrong answers, a final test, a printable completion certificate (with no accreditation value), light/dark mode and an interface in 8 languages. It includes a complete example ("How to read a nutrition label") and three starter templates.
 
 ![screenshot](screenshot.en.png)
 
@@ -28,11 +28,11 @@ Fabrica is a factory for courses and quizzes: you write a course (data, warnings
 
 Undo/redo: the header buttons, `Ctrl+Z` / `Ctrl+Y` (outside text fields) and the "Undo" button in the notification after a deletion.
 
-## Export formats, question types and templates: what exists (2.0.1)
+## Export formats, question types and templates: what exists (2.1.0)
 
-- **Question types already available (7):** single choice, multiple choice, true/false, fill-in, ordering, pair matching, short answer. No new type was added in this release.
-- **Starter templates already available:** "Short course with test", "Guide with evidence table", "Simple quiz" and the complete example. No new templates were added in this release.
-- **Export:** single HTML, ZIP, `.course.json`, `.fff.json`, and quiz for Undava (.json). **There is no SCORM export** (planned, not implemented): it would need a manifest plus an LMS API adapter in the player, and it could only be called "supported" after testing on a real LMS (Moodle or similar), which has not been done.
+- **Question types (8):** single choice, multiple choice, true/false, fill-in, ordering, pair matching, short answer and, since 2.1.0, **numeric answer** (correct value, ± tolerance and an optional unit; a comma or a period is accepted as the decimal separator, spaces as thousands separator; a lone comma is read as the decimal separator). In CSV: type `numeric` (or `num`), `corect` = the value, `greșit1` = the tolerance, `greșit2` = the unit. Ordering and matching already existed.
+- **Templates (6):** "Short course with test", "Guide with evidence table", "Simple quiz", the complete example and, since 2.1.0, two courses in Romanian written as starting points: "Basic online safety" (passwords, two-step sign-in, phishing, backups) and "Effective learning techniques" (self-testing, spaced repetition, planning a session). They are general advice without bibliographic sources: check and adapt them before use. Their content is Romanian only (whatever the interface language).
+- **Export:** single HTML, ZIP, `.course.json`, `.fff.json`, quiz for Undava (.json; numeric questions now go across as type `num` with tolerance) and, since 2.1.0, a **SCORM 1.2 package** (`.zip` with `imsmanifest.xml` + `index.html`, written without a library, "store" method). The package reports to the LMS (`cmi.core.lesson_status`: incomplete / completed / passed / failed; `cmi.core.score.raw/min/max` from the best final-test score; `cmi.suspend_data` with finished lessons; `session_time`; `exit`) and makes no network request; without an LMS API the course runs as usual. At export the manifest structure is checked (namespace, schema 1.2, default organization, `sco` resource, files present in the package). **It has NOT been tested on a real LMS** (Moodle etc.): the adapter was only checked against a simulated API in the tests, and the manifest was not validated against the official XSDs (not included in the package). Try it on your own LMS before relying on it. The package holds a single SCO (the whole course), with no per-question reporting.
 
 ## What it does NOT do, and its limits
 
@@ -88,4 +88,5 @@ Licence: MIT — see the `LICENSE` file in the repository root.
 - 1.1.2 — 2026-10-22: fff-kit 1.1.2: PBKDF2 with 600,000 iterations, anti-clickjacking protection.
 - 1.1.3 — 2026-10-22: fff-kit 1.1.4: touch targets and minimum text size in the shared interface.
 - 1.1.5 — 2026-10-23: fallback message when JavaScript is disabled (noscript).
-- 2.0.0 — 2026-10-26: adaptive path (optional "extra" lessons and up to 3 rules per lesson: the score on the lesson's questions recommends another lesson; a suggestion only, it never blocks the order) and a learner-exportable progress notebook (`.caiet.json`) with a SHA-256 fingerprint and a course-version hash; the editor checks several notebooks at once. The fingerprint is an integrity checksum, not a signature: anyone can recompute it. No SCORM export; the randomized question bank already existed in the final test (seed, shuffle, count).
+- 2.0.0 — 2026-10-26: adaptive path (optional "extra" lessons and up to 3 rules per lesson: the score on the lesson's questions recommends another lesson; a suggestion only, it never blocks the order) and a learner-exportable progress notebook (`.caiet.json`) with a SHA-256 fingerprint and a course-version hash; the editor checks several notebooks at once. The fingerprint is an integrity checksum, not a signature: anyone can recompute it. SCORM 1.2 export added in 2.1.0 (see below); the randomized question bank already existed in the final test (seed, shuffle, count).
+- 2.1.0 — 2026-10-27: numeric question type (with tolerance), SCORM 1.2 export (not tested on a real LMS), two course templates in Romanian; Undava bridge for numeric questions.
