@@ -2,13 +2,13 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 2.0.1 · **Ultima actualizare:** 2026-10-27
+**Versiune:** 2.1.0 · **Ultima actualizare:** 2026-10-27
 
 **Stare:** stabil · **Offline:** complet
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
-Fabrica este o fabrică de cursuri și chestionare: scrii un curs (date, avertismente, niveluri și lecții în Markdown simplu, întrebări de șapte tipuri, glosar, tablou de dovezi, test final cu bancă de întrebări și extragere determinată de seed), îl validezi și îl exporți ca **un singur fișier HTML autonom** (opțional ZIP cu README). Fișierul generat rulează offline, are navigare, progres salvat local, repetiție spațiată pentru întrebările greșite, test final, certificat de parcurgere tipăribil (fără valoare de acreditare), mod luminos/întunecat și interfață în 8 limbi. Include un exemplu complet („Cum citești o etichetă nutrițională”) și trei șabloane de pornire.
+Fabrica este o fabrică de cursuri și chestionare: scrii un curs (date, avertismente, niveluri și lecții în Markdown simplu, întrebări de opt tipuri, glosar, tablou de dovezi, test final cu bancă de întrebări și extragere determinată de seed), îl validezi și îl exporți ca **un singur fișier HTML autonom** (opțional ZIP cu README). Fișierul generat rulează offline, are navigare, progres salvat local, repetiție spațiată pentru întrebările greșite, test final, certificat de parcurgere tipăribil (fără valoare de acreditare), mod luminos/întunecat și interfață în 8 limbi. Include un exemplu complet („Cum citești o etichetă nutrițională”) și trei șabloane de pornire.
 
 ![captură](screenshot.ro.png)
 
@@ -28,11 +28,11 @@ Fabrica este o fabrică de cursuri și chestionare: scrii un curs (date, avertis
 
 Anulare/refacere: butoanele din antet, `Ctrl+Z` / `Ctrl+Y` (în afara câmpurilor de text) și butonul „Anulează” din notificarea de după ștergere.
 
-## Formate de export, tipuri de întrebări și șabloane: ce există (2.0.1)
+## Formate de export, tipuri de întrebări și șabloane: ce există (2.1.0)
 
-- **Tipuri de întrebări existente (7):** alegere unică, alegere multiplă, adevărat/fals, completare, ordonare, potrivire de perechi, răspuns scurt. În această versiune nu s-a adăugat niciun tip nou.
-- **Șabloane existente:** „Curs scurt cu test”, „Ghid cu tabel de dovezi”, „Chestionar simplu” și exemplul complet. În această versiune nu s-au adăugat șabloane noi.
-- **Export:** HTML unic, ZIP, `.course.json`, `.fff.json` și quiz pentru Undava (.json). **Nu există export SCORM** (planificat, neimplementat): ar cere un manifest și un adaptor către API-ul LMS în player și ar putea fi numit „suportat” doar după testare pe un LMS real (Moodle sau similar), lucru care nu s-a făcut.
+- **Tipuri de întrebări (8):** alegere unică, alegere multiplă, adevărat/fals, completare, ordonare, potrivire de perechi, răspuns scurt și, din 2.1.0, **răspuns numeric** (valoare corectă, toleranță ± și unitate opțională; acceptă virgulă sau punct zecimal și spații ca separator de mii; o singură virgulă este citită ca separator zecimal). În CSV: tip `numeric` (sau `num`), `corect` = valoarea, `greșit1` = toleranța, `greșit2` = unitatea. Ordonarea și potrivirea existau deja.
+- **Șabloane (6):** „Curs scurt cu test”, „Ghid cu tabel de dovezi”, „Chestionar simplu”, exemplul complet și, din 2.1.0, două cursuri în română scrise ca punct de pornire: „Siguranță online de bază” (parole, autentificare în doi pași, phishing, copii de siguranță) și „Tehnici de învățare eficientă” (auto-testare, repetiție spațiată, organizarea unei sesiuni). Sunt sfaturi generale, fără surse bibliografice: verifică și adaptează-le înainte de folosire. Conținutul lor este doar în română (indiferent de limba interfeței).
+- **Export:** HTML unic, ZIP, `.course.json`, `.fff.json`, quiz pentru Undava (.json; întrebările numerice trec acum ca tip `num` cu toleranță) și, din 2.1.0, **pachet SCORM 1.2** (`.zip` cu `imsmanifest.xml` + `index.html`, scris fără bibliotecă, metoda „store”). Pachetul raportează către LMS (`cmi.core.lesson_status`: incomplete / completed / passed / failed; `cmi.core.score.raw/min/max` din cel mai bun scor la testul final; `cmi.suspend_data` cu lecțiile terminate; `session_time`; `exit`) și nu face nicio cerere de rețea; fără API LMS, cursul merge ca de obicei. La export, structura manifestului este verificată (spațiu de nume, schema 1.2, organizație implicită, resursă `sco`, fișiere prezente în pachet). **NU a fost testat pe un LMS real** (Moodle etc.): adaptorul a fost verificat doar împotriva unui API simulat în teste, iar manifestul nu a fost validat cu XSD-urile oficiale (nu sunt incluse în pachet). Încearcă-l pe LMS-ul tău înainte de a te baza pe el. Pachetul conține un singur SCO (cursul întreg), fără raportare per întrebare.
 
 ## Ce NU face și limitele
 
@@ -89,3 +89,4 @@ Licență: MIT — vezi fișierul `LICENSE` din rădăcina depozitului.
 - 1.1.3 — 2026-10-22: fff-kit 1.1.4: ținte tactile și text minim în interfața comună.
 - 1.1.5 — 2026-10-23: mesaj de rezervă când JavaScript este dezactivat (noscript).
 - 2.0.0 — 2026-10-26: parcurs adaptiv (lecții opționale „extra” și până la 3 reguli pe lecție: după scorul la întrebări se recomandă altă lecție; doar sugestie, nu blochează ordinea) și caiet de progres exportabil de cursant (`.caiet.json`) cu amprentă SHA-256 și hash al versiunii cursului; editorul verifică mai multe caiete odată. Amprenta este o sumă de control de integritate, nu o semnătură: oricine o poate recalcula. Nu include export SCORM; banca aleatorie de întrebări exista deja în testul final (seed, amestecare, număr).
+- 2.1.0 — 2026-10-27: tip de întrebare numeric (cu toleranță), export SCORM 1.2 (netestat pe LMS real), două șabloane de curs în română; punte Undava pentru întrebări numerice.
