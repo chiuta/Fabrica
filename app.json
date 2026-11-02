@@ -12,8 +12,8 @@
     "Web Crypto"
   ],
   "storageKeys": [],
-  "sizeBytes": 618999,
-  "sha256": "14ef070a1448ef9146cb6096b3dda615060b16af593489dc6bf5d5c1a7478705",
+  "sizeBytes": 759433,
+  "sha256": "bcffc5f7adef41e7d48a54f8de9bbfd562a86b937a3400786c6c72fca717875d",
   "csp": {
     "present": true,
     "directives": {
@@ -57,6 +57,10 @@
       "dialog",
       "label",
       "bundle",
+      "qr",
+      "p2p",
+      "sync",
+      "history",
       "bridge"
     ]
   },
@@ -68,6 +72,10 @@
       "dialog",
       "label",
       "bundle",
+      "qr",
+      "p2p",
+      "sync",
+      "history",
       "bridge"
     ]
   },
