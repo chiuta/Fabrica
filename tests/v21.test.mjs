@@ -1,4 +1,4 @@
-// Teste Fabrica 2.1.0: tip numeric, export SCORM 1.2 (manifest + adaptor către un API LMS SIMULAT), 2 șabloane noi, punte Undava.
+// Teste Fabrica 2.2.0: tip numeric, export SCORM 1.2 (manifest + adaptor către un API LMS SIMULAT), 2 șabloane noi, punte Undava.
 // ATENȚIE: adaptorul SCORM este testat doar împotriva unui API simulat din test, NU pe un LMS real.
 import {createRequire} from 'module';
 import path from 'path'; import {fileURLToPath} from 'url'; import fs from 'fs'; import os from 'os';
