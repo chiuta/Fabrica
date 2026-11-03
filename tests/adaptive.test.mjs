@@ -107,7 +107,7 @@ const st1 = await pl.evaluate(() => JSON.stringify(window.FabricaPlayer.state().
 ok(afterOpt === 0 && /l2/.test(st1), 'lecția opțională poate fi marcată');
 await pl.evaluate(() => location.hash = '#/'); await pl.waitForSelector('#main h1');
 const meta0 = (await pl.textContent('#main dl.meta')).replace(/\s+/g, ' ');
-ok(/0\D+2/.test(meta0) && !/3/.test(meta0.replace(/Descriere.*/, '')), 'progres: doar cele 2 lecții obligatorii se numără — ' + meta0);
+ok(/0\D+2/.test(meta0) && !/3/.test(meta0.replace(/Descriere.*/, '').replace(/\d{4}-\d{2}-\d{2}/g, '')), 'progres: doar cele 2 lecții obligatorii se numără — ' + meta0);
 // refacem lecția 1 cu răspunsuri corecte -> 100% -> Avansat
 await pl.evaluate(() => location.hash = '#/l/l1'); await pl.waitForSelector('.q');
 for (const i of [0, 1]) { await pl.locator('.q').nth(i).locator('[data-act="retry"]').click(); await pl.locator('.q').nth(i).getByLabel('Corect q' + (i + 1)).check(); await pl.locator('.q').nth(i).locator('[data-act="check"]').click(); }
