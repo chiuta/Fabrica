@@ -2,8 +2,8 @@
   "schema": 1,
   "slug": "fabrica",
   "name": "Fabrica — cursuri și chestionare",
-  "version": "2.2.2",
-  "updated": "2026-11-03",
+  "version": "2.2.3",
+  "updated": "2026-11-07",
   "description": "Fabrica: fabrica de cursuri și chestionare. Scrii lecții, întrebări, dovezi și un test final și exporți un fișier HTML autonom, offline, cu CSP strict. Fără cont, fără telemetrie.",
   "egress": [],
   "permissions": [
@@ -14,8 +14,8 @@
     "BroadcastChannel"
   ],
   "storageKeys": [],
-  "sizeBytes": 835803,
-  "sha256": "7916908aaa31bdf582cc72eac881dedba0c3aa7c78858cf4ffebb84a3358c890",
+  "sizeBytes": 837409,
+  "sha256": "308769e3e0281a80e073830fa31735b5b4e2bd345363f69a03ad65ffa97be533",
   "csp": {
     "present": true,
     "directives": {
@@ -67,7 +67,7 @@
     ]
   },
   "kit": {
-    "version": "1.2.0",
+    "version": "1.2.1",
     "modules": [
       "core",
       "store",
