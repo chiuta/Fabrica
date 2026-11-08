@@ -14,8 +14,8 @@
     "BroadcastChannel"
   ],
   "storageKeys": [],
-  "sizeBytes": 837409,
-  "sha256": "308769e3e0281a80e073830fa31735b5b4e2bd345363f69a03ad65ffa97be533",
+  "sizeBytes": 837427,
+  "sha256": "96f5bce9102cb37f2eb53d74f1c799d56e8f053485d0dc9ce42ea7a2e31860b8",
   "csp": {
     "present": true,
     "directives": {
